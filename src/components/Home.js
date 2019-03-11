@@ -10,11 +10,11 @@ const schema = {
   "properties": {
     "version": {
       "type": "string",
-      "title": "Version"
+      "title": "Version",
+      "enum": ["0.0.1"]
     },
     "metadata": {
       "type": "string",
-      "format": "textarea",
       "title": "Metadata"
     },
     "session_steps": {
@@ -41,7 +41,8 @@ const schema = {
                 },
                 "task_type": {
                   "type": "string",
-                  "title": "Task"
+                  "title": "Task",
+                  "enum": ["dummy", "resample", "vad", "diarization", "decoder"]
                 },
                 "parents": {
                   "type": "string",
@@ -61,6 +62,12 @@ const schema = {
 };
 
 const uiSchema = {
+  "metadata": {
+    "ui:widget": "textarea",
+    "ui:options": {
+      "rows": 8
+    }
+  },
   "session_steps": {
     "items": {
       "steps": {
