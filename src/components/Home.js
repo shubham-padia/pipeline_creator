@@ -1,5 +1,33 @@
 import React, { Component } from 'react'
-import Form from 'react-jsonschema-form-semanticui'
+import Form from 'react-jsonschema-form'
+import './home.css'
+import 'bootstrap/dist/css/bootstrap.css';
+
+
+function ArrayFieldTemplate(props) {
+  var id = props.idSchema.$id
+  var ArrayClassName = "col-md-5"
+  var ButtonClassName = "col-md-1"
+
+  if (id === 'root_session_steps') {
+    ArrayClassName = "btn col-xs-9"
+    ButtonClassName = "btn col-xs-1"
+  }
+
+  console.log(id)
+  console.log(ArrayClassName, ButtonClassName)
+  return (
+    <div>
+      {props.items.map(element => element.children)}
+      {props.canAdd && <button type="button" className="btn btn-info btn-add col-xs-1" onClick={props.onAddClick}>
+        <i class="glyphicon glyphicon-plus"></i>
+      </button>
+      }
+      
+    </div>
+  );
+}
+
 
 const schema = {
   "title": "",
@@ -61,6 +89,10 @@ const schema = {
   }
 };
 
+const twoWide = {
+  classNames: "col-md-4"
+}
+
 const uiSchema = {
   "metadata": {
     "ui:widget": "textarea",
@@ -69,9 +101,14 @@ const uiSchema = {
     }
   },
   "session_steps": {
+    classNames: "col-md-11",
     "items": {
       "steps": {
         "items": {
+          classNames: "col-md-6",
+          "id": twoWide,
+          "task_type": twoWide,
+          "parents": twoWide,
           "inputs": {
             "ui:widget": "textarea",
             "ui:options": {
@@ -95,7 +132,8 @@ export class Home extends Component {
           uiSchema={uiSchema}
           onChange={log("changed")}
           onSubmit={log("submitted")}
-          onError={log("errors")} />
+          onError={log("errors")}
+        />
       </div>
     )
   }
