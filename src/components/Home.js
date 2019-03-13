@@ -49,6 +49,10 @@ const schema = {
             "minItems": 1,
             "items": {
               "type": "object",
+              "required": [
+                "id",
+                'task_type'
+              ],
               "properties": {
                 "id": {
                   "type": "number",
@@ -140,9 +144,11 @@ const convertToPipelineFormat = (formData) => {
       let step_id = step_for_session.id;
       delete step_for_session.id;
       step_for_session.inputs = JSON.parse(step_for_session.inputs);
-      step_for_session.parents = step_for_session.parents.split(",").map(function (item) {
-        return parseInt(item.trim());
-      });
+      if (step_for_session.parents !== undefined) {
+        step_for_session.parents = step_for_session.parents.split(",").map(function (item) {
+          return parseInt(item.trim());
+        });
+      }
       formatted_steps_for_session[step_id] = step_for_session;
     }
     formatted_steps[session_num] = formatted_steps_for_session;
