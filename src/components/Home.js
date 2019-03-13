@@ -2,64 +2,51 @@ import React, { Component } from 'react'
 import Form from 'react-jsonschema-form'
 import './home.css'
 import 'bootstrap/dist/css/bootstrap.css';
-
-
-function ArrayFieldTemplate(props) {
-  var id = props.idSchema.$id
-  var ArrayClassName = "col-md-5"
-  var ButtonClassName = "col-md-1"
-
-  if (id === 'root_session_steps') {
-    ArrayClassName = "btn col-xs-9"
-    ButtonClassName = "btn col-xs-1"
-  }
-
-  console.log(id)
-  console.log(ArrayClassName, ButtonClassName)
-  return (
-    <div>
-      {props.items.map(element => element.children)}
-      {props.canAdd && <button type="button" className="btn btn-info btn-add col-xs-1" onClick={props.onAddClick}>
-        <i class="glyphicon glyphicon-plus"></i>
-      </button>
-      }
-      
-    </div>
-  );
-}
-
+import { throws } from 'assert';
 
 const schema = {
   "title": "",
   "type": "object",
   "required": [
-    "version"
+    "name",
+    "version",
+    "metadata",
+    "steps"
   ],
   "properties": {
+    "name": {
+      "type": "string",
+      "title": "Name"
+    },
     "version": {
       "type": "string",
       "title": "Version",
-      "enum": ["0.0.1"]
+      "enum": ["0.0.1"],
+      "default": "0.0.1"
     },
     "metadata": {
       "type": "string",
       "title": "Metadata"
     },
-    "session_steps": {
+    "steps": {
       "type": "array",
-      "title": "Session Steps",
+      "title": "Steps",
+      "minItems": 1,
       "items": {
         "type": "object",
         "required": [
+          "session_num",
+          "steps_for_session"
         ],
         "properties": {
           "session_num": {
-            "type": "string",
-            "title": "Session Number"
+            "type": "number",
+            "title": "Session Number",
           },
-          "steps": {
+          "steps_for_session": {
             "type": "array",
-            "title": "Steps",
+            "title": "Steps for this session",
+            "minItems": 1,
             "items": {
               "type": "object",
               "properties": {
@@ -70,7 +57,8 @@ const schema = {
                 "task_type": {
                   "type": "string",
                   "title": "Task",
-                  "enum": ["dummy", "resample", "vad", "diarization", "decoder"]
+                  "enum": ["dummy", "resample", "vad", "diarization", "decoder"],
+                  "default": "dummy"
                 },
                 "parents": {
                   "type": "string",
@@ -78,7 +66,8 @@ const schema = {
                 },
                 "inputs": {
                   "type": "string",
-                  "title": "Inputs"
+                  "title": "Inputs",
+                  "default": "{}"
                 }
               }
             }
@@ -100,12 +89,18 @@ const uiSchema = {
       "rows": 8
     }
   },
-  "session_steps": {
-    classNames: "col-md-11",
+  "steps": {
+    classNames: "object",
+    "ui:options": {
+      "orderable": false
+    },
     "items": {
-      "steps": {
+      "steps_for_session": {
+        "ui:options": {
+          "orderable": false
+        },
         "items": {
-          classNames: "col-md-6",
+          classNames: "object",
           "id": twoWide,
           "task_type": twoWide,
           "parents": twoWide,
@@ -121,9 +116,52 @@ const uiSchema = {
   }
 };
 
+function isEmpty(obj) {
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key))
+      return false;
+  }
+  return true;
+}
+
 const log = (type) => console.log.bind(console, type);
 
+const convertToPipelineFormat = (formData) => {
+  var formatted_steps = {};
+  if (isEmpty(formData)) {
+    return formData;
+  }
+
+  for (var steps_session_info of formData.steps) {
+    var formatted_steps_for_session = {};
+    var session_num = steps_session_info.session_num;
+
+    for (var step_for_session of steps_session_info.steps_for_session) {
+      let step_id = step_for_session.id;
+      delete step_for_session.id;
+      step_for_session.inputs = JSON.parse(step_for_session.inputs);
+      step_for_session.parents = step_for_session.parents.split(",").map(function (item) {
+        return parseInt(item.trim());
+      });
+      formatted_steps_for_session[step_id] = step_for_session;
+    }
+    formatted_steps[session_num] = formatted_steps_for_session;
+  }
+  formData.steps = formatted_steps;
+  return formData;
+}
+
 export class Home extends Component {
+  updateFormData = (form) => {
+    var formData = form.formData;
+    var file_name = formData.name;
+    delete formData.name;
+
+    var resultFormData = JSON.stringify(convertToPipelineFormat(form.formData), null, 2);
+    var fileDownload = require('js-file-download');
+    fileDownload(resultFormData, file_name + '.json');
+  }
+
   render() {
     return (
       <div>
@@ -131,7 +169,7 @@ export class Home extends Component {
         <Form schema={schema}
           uiSchema={uiSchema}
           onChange={log("changed")}
-          onSubmit={log("submitted")}
+          onSubmit={this.updateFormData}
           onError={log("errors")}
         />
       </div>
