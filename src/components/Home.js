@@ -94,11 +94,11 @@ const uiSchema = {
     }
   },
   "steps": {
-    classNames: "object",
     "ui:options": {
       "orderable": false
     },
     "items": {
+      classNames: "object",
       "steps_for_session": {
         "ui:options": {
           "orderable": false
