@@ -51,7 +51,8 @@ const schema = {
               "type": "object",
               "required": [
                 "id",
-                'task_type'
+                'task_type',
+                'inputs'
               ],
               "properties": {
                 "id": {
@@ -64,7 +65,7 @@ const schema = {
                   "enum": ["dummy", "resample", "vad", "diarization", "decoder"],
                   "default": "dummy"
                 },
-                "parents": {
+                "parent_id": {
                   "type": "string",
                   "title": "Parents"
                 },
@@ -107,7 +108,7 @@ const uiSchema = {
           classNames: "object",
           "id": twoWide,
           "task_type": twoWide,
-          "parents": twoWide,
+          "parent_id": twoWide,
           "inputs": {
             "ui:widget": "textarea",
             "ui:options": {
@@ -135,7 +136,7 @@ const convertToPipelineFormat = (formData) => {
   if (isEmpty(formData)) {
     return formData;
   }
-
+  formData.metadata = JSON.parse(formData.metadata)
   for (var steps_session_info of formData.steps) {
     var formatted_steps_for_session = {};
     var session_num = steps_session_info.session_num;
@@ -144,8 +145,8 @@ const convertToPipelineFormat = (formData) => {
       let step_id = step_for_session.id;
       delete step_for_session.id;
       step_for_session.inputs = JSON.parse(step_for_session.inputs);
-      if (step_for_session.parents !== undefined) {
-        step_for_session.parents = step_for_session.parents.split(",").map(function (item) {
+      if (step_for_session.parent_id !== undefined) {
+        step_for_session.parent_id = step_for_session.parent_id.split(",").map(function (item) {
           return parseInt(item.trim());
         });
       }
