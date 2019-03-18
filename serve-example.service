@@ -1,0 +1,13 @@
+[Unit]
+Description=Pipeline Creator service file.
+After=network.target
+
+[Service]
+Type=simple
+User=shubham
+WorkingDirectory=/home/shubham/github/pipeline_creator
+ExecStart=/home/shubham/.nvm/versions/node/v10.15.3/bin/node /home/shubham/.nvm/versions/node/v10.15.3/lib/node_modules/serve/bin/serve.js -s build -l 4000
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
