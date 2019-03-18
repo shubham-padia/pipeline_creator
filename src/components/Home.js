@@ -3,6 +3,7 @@ import Form from 'react-jsonschema-form'
 import './home.css'
 import 'bootstrap/dist/css/bootstrap.css';
 import Popup from "reactjs-popup";
+import ls from "local-storage"
 
 const schema = {
   "title": "",
@@ -159,7 +160,11 @@ const convertToPipelineFormat = (formData) => {
 }
 
 export class Home extends Component {
-  updateFormData = (form) => {
+  state = {
+    pipelineFormData: ls.get("pipelineFormData")
+  }
+
+  submitFormData = (form) => {
     var formData = form.formData;
     var file_name = formData.name;
     delete formData.name;
@@ -167,6 +172,34 @@ export class Home extends Component {
     var resultFormData = JSON.stringify(convertToPipelineFormat(form.formData), null, 2);
     var fileDownload = require('js-file-download');
     fileDownload(resultFormData, file_name + '.json');
+  }
+
+  updateFormData = (form) => {
+    this.setState({
+      pipelineFormData: form.formData
+    });
+    //ls.set("pipelineFormData", form.formData)
+    
+  }
+
+  saveStateToLocalStorage = () => {
+    ls.set("pipelineFormData", this.state.pipelineFormData)
+  }
+
+  componentDidMount() {
+    window.addEventListener(
+      "beforeunload",
+      this.saveStateToLocalStorage.bind(this)
+    );
+  }
+  
+  componentWillUnmount() {
+    window.removeEventListener(
+      "beforeunload",
+      this.saveStateToLocalStorage.bind(this)
+    );
+
+    this.saveStateToLocalStorage();
   }
 
   render() {
@@ -209,8 +242,9 @@ export class Home extends Component {
         </div>
         <Form schema={schema}
           uiSchema={uiSchema}
-          onChange={log("changed")}
-          onSubmit={this.updateFormData}
+          formData={this.state.pipelineFormData}
+          onChange={this.updateFormData}
+          onSubmit={this.submitFormData}
           onError={log("errors")}
         />
       </div>
