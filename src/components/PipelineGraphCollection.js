@@ -22,8 +22,10 @@ export class PipelineGraphCollection extends Component {
         <Popup
           trigger={<button className="help-button btn btn-info"> View graphs </button>}
           modal
+          lockScroll={true}
+          contentStyle={{height: "90%", overflowY: "scroll"}}
           closeOnDocumentClick>
-          {this.stepsForEachSession(this.props.steps)}
+            {this.stepsForEachSession(this.props.steps)}
         </Popup>
     )
   }

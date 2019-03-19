@@ -7,6 +7,7 @@ export class Help extends Component {
                 <Popup
                     trigger={<button className="help-button btn btn-info" style={{marginLeft: "40px"}}> Help </button>}
                     modal
+                    contentStyle={{height: "90%", overflowY: "scroll"}}
                     closeOnDocumentClick>
                     <div style={{ whiteSpace: "pre" }}>
                         <h3> {"Input Formats:"} </h3>
