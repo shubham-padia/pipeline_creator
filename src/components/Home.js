@@ -5,7 +5,10 @@ import 'bootstrap/dist/css/bootstrap.css'
 import ls from "local-storage"
 import Help from './Help'
 import { schema, uiSchema } from './SchemaDefinitions'
-
+import PipelineGraphCollection from './PipelineGraphCollection'
+import { diffJson } from 'diff'
+import test_pipeline from './test_pipeline'
+import { pipeline } from 'stream';
 
 function isEmpty(obj) {
   for (var key in obj) {
@@ -60,11 +63,13 @@ export class Home extends Component {
   }
 
   updateFormData = (form) => {
+    console.log(form.formData)
+    console.log(diffJson(this.state.pipelineFormData, form.formData))
     this.setState({
       pipelineFormData: form.formData
     });
     //ls.set("pipelineFormData", form.formData)
-    
+
   }
 
   saveStateToLocalStorage = () => {
@@ -90,7 +95,11 @@ export class Home extends Component {
   render() {
     return (
       <div>
-        <Help></Help>
+        <div style={{ marginBottom: "30px" }}>
+          <h1 style={{ textAlign: "center", margin: "auto", display: "inline" }} > Create Pipeline </h1>
+          <PipelineGraphCollection steps={test_pipeline}></PipelineGraphCollection>
+          <Help></Help>
+        </div>
         <Form schema={schema}
           uiSchema={uiSchema}
           formData={this.state.pipelineFormData}

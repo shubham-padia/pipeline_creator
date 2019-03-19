@@ -4,10 +4,8 @@ import Popup from "reactjs-popup"
 export class Help extends Component {
     render() {
         return (
-            <div style={{ marginBottom: "30px" }}>
-                <h1 style={{ textAlign: "center", margin: "auto", display: "inline" }} > Create Pipeline </h1>
                 <Popup
-                    trigger={<button className="help-button btn btn-info"> Help </button>}
+                    trigger={<button className="help-button btn btn-info" style={{marginLeft: "40px"}}> Help </button>}
                     modal
                     closeOnDocumentClick>
                     <div style={{ whiteSpace: "pre" }}>
@@ -38,7 +36,6 @@ export class Help extends Component {
                         \n}'}
                     </div>
                 </Popup>
-            </div>
         )
     }
 }
