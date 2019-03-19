@@ -5,7 +5,7 @@ export class Help extends Component {
     render() {
         return (
                 <Popup
-                    trigger={<button className="help-button btn btn-info" style={{marginLeft: "40px"}}> Help </button>}
+                    trigger={<span> Help </span>}
                     modal
                     contentStyle={{height: "90%", overflowY: "scroll"}}
                     closeOnDocumentClick>

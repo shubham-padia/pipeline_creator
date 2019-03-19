@@ -20,7 +20,7 @@ export class PipelineGraphCollection extends Component {
   render() {
     return (
         <Popup
-          trigger={<button className="help-button btn btn-info"> View graphs </button>}
+          trigger={<span> View graphs </span>}
           modal
           lockScroll={true}
           contentStyle={{height: "90%", overflowY: "scroll"}}

@@ -8,7 +8,8 @@ import { schema, uiSchema } from './SchemaDefinitions'
 import PipelineGraphCollection from './PipelineGraphCollection'
 import { diffJson } from 'diff'
 import test_pipeline from './test_pipeline'
-import { pipeline } from 'stream';
+import { Menu } from 'semantic-ui-react'
+
 
 function isEmpty(obj) {
   for (var key in obj) {
@@ -95,18 +96,28 @@ export class Home extends Component {
   render() {
     return (
       <div>
-        <div style={{ marginBottom: "30px" }}>
-          <h1 style={{ textAlign: "center", margin: "auto", display: "inline" }} > Create Pipeline </h1>
-          <PipelineGraphCollection steps={test_pipeline}></PipelineGraphCollection>
-          <Help></Help>
+
+        <Menu className="top fixed" stackable size="huge">
+          <Menu.Item>Pipeline Generator</Menu.Item>
+          <Menu.Menu position="right">
+            <Menu.Item name='pipeline-graphs'>
+              <PipelineGraphCollection steps={test_pipeline}></PipelineGraphCollection>
+            </Menu.Item>
+
+            <Menu.Item name='help'>
+              <Help></Help>
+            </Menu.Item>
+          </Menu.Menu>
+        </Menu>
+        <div style={{ marginTop: "50px", marginBottom: "50px" }} >
+          <Form schema={schema}
+            uiSchema={uiSchema}
+            formData={this.state.pipelineFormData}
+            onChange={this.updateFormData}
+            onSubmit={this.submitFormData}
+            onError={log("errors")}
+          />
         </div>
-        <Form schema={schema}
-          uiSchema={uiSchema}
-          formData={this.state.pipelineFormData}
-          onChange={this.updateFormData}
-          onSubmit={this.submitFormData}
-          onError={log("errors")}
-        />
       </div>
     )
   }
