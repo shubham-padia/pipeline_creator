@@ -15,12 +15,6 @@ var options = {
     height: "400px"
 };
 
-var events = {
-    select: function (event) {
-        var { nodes, edges } = event;
-    }
-}
-
 export class PipelineGraph extends Component {
     constructGraphFromSteps = (steps) => {
         console.log(steps)
@@ -46,7 +40,7 @@ export class PipelineGraph extends Component {
         return (
             <div>
                 <h1>{this.props.header}</h1>
-                <Graph graph={this.constructGraphFromSteps(this.props.steps)} options={options} events={events} />
+                <Graph graph={this.constructGraphFromSteps(this.props.steps)} options={options} />
             </div>
         )
     }
