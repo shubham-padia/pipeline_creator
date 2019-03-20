@@ -9,7 +9,7 @@ import PipelineGraphCollection from './PipelineGraphCollection'
 import { diffJson } from 'diff'
 import test_pipeline from './test_pipeline'
 import { Menu } from 'semantic-ui-react'
-
+import { validate_all } from './Validate'
 
 function isEmpty(obj) {
   for (var key in obj) {
@@ -64,8 +64,10 @@ export class Home extends Component {
   }
 
   updateFormData = (form) => {
+    console.log("formdata")
     console.log(form.formData)
     console.log(diffJson(this.state.pipelineFormData, form.formData))
+    validate_all()
     this.setState({
       pipelineFormData: form.formData
     });
