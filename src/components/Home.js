@@ -27,7 +27,7 @@ const log = (type) => {
 export class Home extends Component {
   state = {
     pipelineFormData: ls.get("pipelineFormData"),
-    status: <span color="red">Invalid form</span>
+    valid: false
   }
 
   convertToPipelineFormat = (formDataOriginal) => {
@@ -78,15 +78,9 @@ export class Home extends Component {
 
   updateFormData = (form) => {
     let steps = this.convertToPipelineFormat(form.formData).steps
-    if (validate_parents_exist(steps) && validate_predecessor_tasks(steps)) {
-      this.setState({
-        status: <span color="green">Valid Form</span>
-      });
-    } else {
-      this.setState({
-        status: <span color="red">Invalid Form</span>
-      });
-    }
+    this.setState({
+      valid: (validate_parents_exist(steps) && validate_predecessor_tasks(steps))
+    })
     //validate_all()
     this.setState({
       pipelineFormData: form.formData
@@ -132,7 +126,9 @@ export class Home extends Component {
         <Menu className="top fixed" stackable size="huge">
           <Menu.Item>Pipeline Generator</Menu.Item>
           <Menu.Menu position="right">
-            <Menu.Item><span color="red">{this.state.status}</span></Menu.Item>
+            <Menu.Item>
+              {this.state.valid ? <span style={{color: "green"}}>Valid Form</span> : <span style={{color: "red"}}>Invalid Form</span>}
+            </Menu.Item>
             <Menu.Item name='pipeline-graphs'>
               <PipelineGraphCollection steps={test_pipeline}></PipelineGraphCollection>
             </Menu.Item>
