@@ -10,15 +10,16 @@ const valid_predecessors = {
 }
 
 export function validate_parents_exist(steps) {
-
-    let step_ids = Object.keys(steps).map(key => parseInt(key));
-
-    for (var step_id in steps) {
-        let step = steps[step_id];
-        if (step.parent_id) {
-            for (var parent_id of step.parent_id) {
-                if (!step_ids.includes(parent_id)) {
-                    return false;
+    for (var session_num in steps) {
+        var steps_for_session = steps[session_num];
+        let step_ids = Object.keys(steps_for_session).map(key => parseInt(key));
+        for (var step_id in steps_for_session) {
+            let step = steps_for_session[step_id];
+            if (step.parent_id) {
+                for (var parent_id of step.parent_id) {
+                    if (!step_ids.includes(parent_id)) {
+                        return false;
+                    }
                 }
             }
         }
@@ -27,17 +28,21 @@ export function validate_parents_exist(steps) {
 }
 
 export function validate_predecessor_tasks(steps) {
-    for (var step_id in steps) {
-        let step = steps[step_id];
-        if (step.parent_id) {
-            for (var parent_id of step.parent_id) {
-                let valid_predecessors_for_step = valid_predecessors[step.task_type]
-                if (!valid_predecessors_for_step.includes(steps[parent_id].task_type)) {
-                    return false;
+    for (var session_num in steps) {
+        var steps_for_session = steps[session_num];
+
+        for (var step_id in steps_for_session) {
+            let step = steps_for_session[step_id];
+
+            if (step.parent_id) {
+                for (var parent_id of step.parent_id) {
+                    let valid_predecessors_for_step = valid_predecessors[step.task_type]
+                    if (!valid_predecessors_for_step.includes(steps_for_session[parent_id].task_type)) {
+                        return false;
+                    }
                 }
             }
         }
-
     }
     return true;
 }

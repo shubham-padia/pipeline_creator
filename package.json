@@ -4,9 +4,11 @@
   "private": true,
   "dependencies": {
     "bootstrap": "3.3.6",
+    "deep-diff": "^1.0.2",
     "diff": "^4.0.1",
     "js-file-download": "^0.4.4",
     "local-storage": "^1.4.2",
+    "lodash": "^4.17.11",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-graph-vis": "^1.0.2",

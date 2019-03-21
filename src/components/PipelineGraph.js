@@ -17,7 +17,6 @@ var options = {
 
 export class PipelineGraph extends Component {
     constructGraphFromSteps = (steps) => {
-        console.log(steps)
         var nodes = [];
         var edges = [];
 
