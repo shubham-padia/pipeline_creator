@@ -77,10 +77,17 @@ export class Home extends Component {
   }
 
   updateFormData = (form) => {
-    let steps = this.convertToPipelineFormat(form.formData).steps
-    this.setState({
-      valid: (validate_parents_exist(steps) && validate_predecessor_tasks(steps))
-    })
+    try {
+      let steps = this.convertToPipelineFormat(form.formData).steps
+      this.setState({
+        valid: (validate_parents_exist(steps) && validate_predecessor_tasks(steps))
+      })
+    } catch {
+      this.setState({
+        valid: false
+      })
+    }
+    
     //validate_all()
     this.setState({
       pipelineFormData: form.formData
