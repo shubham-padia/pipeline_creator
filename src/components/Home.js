@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Form from 'react-jsonschema-form'
-import './home.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import ls from "local-storage"
 import Help from './Help'

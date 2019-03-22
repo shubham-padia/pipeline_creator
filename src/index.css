@@ -1,3 +1,26 @@
 body {
     padding: 2% 3% 0 3%;
 }
+
+.btn-add, .array-item-remove {
+    max-width: 40px;    
+    max-height: 40px;
+}
+
+.object {
+    border: 2px gray solid;
+    border-radius: 2px;
+    padding: 30px;
+}
+
+.array-item-toolbox {
+    width: 50px !important;
+}
+
+.ui.menu .item {
+    -webkit-user-select: auto; /* Safari 3.1+ */
+    -moz-user-select: auto; /* Firefox 2+ */
+    -ms-user-select: auto; /* IE 10+ */
+    user-select: auto; /* Standard syntax */
+}
+
