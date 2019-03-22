@@ -123,3 +123,29 @@ export const valid_predecessors = {
     'decoder': ['resample', 'vad', 'diarization']
 }
 
+export const input_formats = {
+    'dummy': {},
+    'resample': { 
+        "mic_name": ""
+    },
+    'vad': {
+        "mic_name": ""
+    },
+    'diarization': {
+        "mic_name": "",
+        "speaker_id": ""
+    },
+    'decoder': {
+        "seg": {
+            "mic_name": "",
+            "source": "",
+            "speaker_id": ""
+        },
+        "wav": {
+            "mic_name": "",
+            "source": "",
+            "speaker_id": ""
+        }
+    }
+}
+
