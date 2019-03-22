@@ -18,10 +18,24 @@ const log = (type) => {
 }
 
 export class Home extends Component {
-  state = {
-    pipelineFormData: ls.get("pipelineFormData"),
-    valid: false
+  constructor(props) {
+    super(props);
+    
+    let pipelineFormData = ls.get("pipelineFormData");
+    let valid = false;
+    try {
+      let steps = convertToPipelineFormat(pipelineFormData).steps
+      valid = (validate_parents_exist(steps) && validate_predecessor_tasks(steps));
+    } catch {
+    }
+
+    this.state = {
+      pipelineFormData,
+      valid
+    };
   }
+
+  
 
   submitFormData = (form) => {
     this.setState({
@@ -39,22 +53,18 @@ export class Home extends Component {
   }
 
   updateFormData = (form) => {
+    let valid = false;
     try {
-      let steps = convertToPipelineFormat(form.formData).steps
-      this.setState({
-        valid: (validate_parents_exist(steps) && validate_predecessor_tasks(steps))
-      })
+      let steps = convertToPipelineFormat(form.formData).steps;
+      valid = (validate_parents_exist(steps) && validate_predecessor_tasks(steps))
     } catch {
-      this.setState({
-        valid: false
-      })
     }
     
-    //validate_all()
+    // This needs to an atomic operation. Do not set the state for each of the value seperately.
     this.setState({
-      pipelineFormData: form.formData
+      pipelineFormData: form.formData,
+      valid
     });
-    //ls.set("pipelineFormData", form.formData)
   }
 
   saveStateToLocalStorage = () => {
