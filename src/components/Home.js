@@ -6,16 +6,10 @@ import ls from "local-storage"
 import Help from './Help'
 import { schema, uiSchema } from './SchemaDefinitions'
 import PipelineGraphCollection from './PipelineGraphCollection'
-import test_pipeline from './test_pipeline'
 import { Menu } from 'semantic-ui-react'
-import { validate_parents_exist, validate_predecessor_tasks, validate_all } from './Validate'
-import diff from 'deep-diff'
+import { validate_parents_exist, validate_predecessor_tasks } from './Validate'
 import { cloneDeep } from 'lodash'
 import {convertToPipelineFormat} from './utils'
-
-const log = (type) => {
-  console.log("error")
-}
 
 export class Home extends Component {
   constructor(props) {
