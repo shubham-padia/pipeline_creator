@@ -115,3 +115,11 @@ export const uiSchema = {
     }
 };
 
+export const valid_predecessors = {
+    'dummy': [undefined, []],
+    'resample': ['dummy'],
+    'vad': ['resample'],
+    'diarization': ['resample'],
+    'decoder': ['resample', 'vad', 'diarization']
+}
+

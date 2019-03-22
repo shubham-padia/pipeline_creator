@@ -1,13 +1,6 @@
 // Validation is done on the pipeline json format and not on the formdata format.
 import test_pipeline from './test_pipeline';
-
-const valid_predecessors = {
-    'dummy': [undefined, []],
-    'resample': ['dummy'],
-    'vad': ['resample'],
-    'diarization': ['resample'],
-    'decoder': ['resample', 'vad', 'diarization']
-}
+import { valid_predecessors } from './SchemaDefinitions';
 
 export function validate_parents_exist(steps) {
     for (var session_num in steps) {
