@@ -21,7 +21,7 @@ export class PipelineGraph extends Component {
         var edges = [];
 
         for (var step_id in steps) {
-            let step = steps[step_id]
+            let step = steps[step_id];
             let node = { id: step_id, label: step.task_type + '_' + step_id };
             nodes.push(node);
             if(step.parent_id) {

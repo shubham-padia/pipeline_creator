@@ -11,14 +11,7 @@ import { Menu } from 'semantic-ui-react'
 import { validate_parents_exist, validate_predecessor_tasks, validate_all } from './Validate'
 import diff from 'deep-diff'
 import { cloneDeep } from 'lodash'
-
-function isEmpty(obj) {
-  for (var key in obj) {
-    if (obj.hasOwnProperty(key))
-      return false;
-  }
-  return true;
-}
+import {convertToPipelineFormat} from './utils'
 
 const log = (type) => {
   console.log("error")
@@ -28,37 +21,6 @@ export class Home extends Component {
   state = {
     pipelineFormData: ls.get("pipelineFormData"),
     valid: false
-  }
-
-  convertToPipelineFormat = (formDataOriginal) => {
-    //make sure we don't make any changes to the object which has been passed as a reference.
-    var formData = cloneDeep(formDataOriginal);
-
-    var formatted_steps = {};
-    if (isEmpty(formData)) {
-      return formData;
-    }
-    formData.metadata = JSON.parse(formData.metadata)
-    for (var steps_session_info of formData.steps) {
-      var formatted_steps_for_session = {};
-      var session_num = steps_session_info.session_num;
-
-      for (var step_for_session of steps_session_info.steps_for_session) {
-        let step_id = step_for_session.id;
-        delete step_for_session.id;
-        step_for_session.inputs = JSON.parse(step_for_session.inputs);
-
-        if (step_for_session.parent_id !== undefined) {
-          step_for_session.parent_id = step_for_session.parent_id.split(",").map(function (item) {
-            return parseInt(item.trim());
-          });
-        }
-        formatted_steps_for_session[step_id] = step_for_session;
-      }
-      formatted_steps[session_num] = formatted_steps_for_session;
-    }
-    formData.steps = formatted_steps;
-    return formData;
   }
 
   submitFormData = (form) => {
@@ -71,14 +33,14 @@ export class Home extends Component {
     var file_name = formData.name;
     delete formData.name;
 
-    var resultFormData = JSON.stringify(this.convertToPipelineFormat(form.formData), null, 2);
+    var resultFormData = JSON.stringify(convertToPipelineFormat(form.formData), null, 2);
     var fileDownload = require('js-file-download');
     fileDownload(resultFormData, file_name + '.json');
   }
 
   updateFormData = (form) => {
     try {
-      let steps = this.convertToPipelineFormat(form.formData).steps
+      let steps = convertToPipelineFormat(form.formData).steps
       this.setState({
         valid: (validate_parents_exist(steps) && validate_predecessor_tasks(steps))
       })
@@ -116,7 +78,7 @@ export class Home extends Component {
   }
 
   validate = (formData, errors) => {
-    let steps = this.convertToPipelineFormat(formData).steps;
+    let steps = convertToPipelineFormat(formData).steps;
 
     if (!validate_parents_exist(steps)) {
       errors.steps.addError("Parents do not exist. You're an orphan now. Deal with it.")
@@ -137,7 +99,7 @@ export class Home extends Component {
               {this.state.valid ? <span style={{color: "green"}}>Valid Form</span> : <span style={{color: "red"}}>Invalid Form</span>}
             </Menu.Item>
             <Menu.Item name='pipeline-graphs'>
-              <PipelineGraphCollection steps={test_pipeline}></PipelineGraphCollection>
+              <PipelineGraphCollection valid={this.state.valid} steps={this.state.pipelineFormData}></PipelineGraphCollection>
             </Menu.Item>
 
             <Menu.Item name='help'>
