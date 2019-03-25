@@ -125,7 +125,7 @@ export const valid_predecessors = {
 
 export const input_formats = {
     'dummy': {},
-    'resample': { 
+    'resample': {
         "mic_name": ""
     },
     'vad': {

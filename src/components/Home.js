@@ -8,13 +8,13 @@ import PipelineGraphCollection from './PipelineGraphCollection'
 import { Menu } from 'semantic-ui-react'
 import { validate_all, validate_all_boolean } from './Validate'
 import { cloneDeep } from 'lodash'
-import {convertToPipelineFormat} from './utils'
-import {diff, applyChange} from 'deep-diff'
+import { convertToPipelineFormat } from './utils'
+import { diff, applyChange } from 'deep-diff'
 
 export class Home extends Component {
   constructor(props) {
     super(props);
-    
+
     let pipelineFormData = ls.get("pipelineFormData");
     let valid = false;
     try {
@@ -50,10 +50,10 @@ export class Home extends Component {
 
     for (var diffObj of formDiff) {
       let path = diffObj.path;
-      
-      if (diffObj.kind === "E" && path[path.length - 1] === "task_type"){
+
+      if (diffObj.kind === "E" && path[path.length - 1] === "task_type") {
         let change = cloneDeep(diffObj);
-        
+
         change.path[path.length - 1] = "inputs";
         change.rhs = JSON.stringify(input_formats[diffObj.rhs], null, 2)
         applyChange(formData, true, change);
@@ -66,7 +66,7 @@ export class Home extends Component {
       valid = validate_all_boolean(steps, formData)
     } catch {
     }
-    
+
     // This needs to an atomic operation. Do not set the state for each of the value seperately.
     this.setState({
       pipelineFormData: formData,
@@ -112,7 +112,7 @@ export class Home extends Component {
           <Menu.Item>Pipeline Generator</Menu.Item>
           <Menu.Menu position="right">
             <Menu.Item>
-              {this.state.valid ? <span style={{color: "green"}}>Valid Form</span> : <span style={{color: "red"}}>Invalid Form</span>}
+              {this.state.valid ? <span style={{ color: "green" }}>Valid Form</span> : <span style={{ color: "red" }}>Invalid Form</span>}
             </Menu.Item>
             <Menu.Item name='pipeline-graphs'>
               <PipelineGraphCollection valid={this.state.valid} steps={this.state.pipelineFormData}></PipelineGraphCollection>

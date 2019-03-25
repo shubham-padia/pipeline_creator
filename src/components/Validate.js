@@ -55,7 +55,7 @@ export function validate_all(steps, formData) {
         errors.push("Session numbers should be unique.");
     }
 
-    if(!validate_parents_exist(steps)) {
+    if (!validate_parents_exist(steps)) {
         errors.push("Parents do not exist.");
     } else if (!validate_predecessor_tasks(steps)) {
         errors.push("Predecessor tasks do not exist.");
