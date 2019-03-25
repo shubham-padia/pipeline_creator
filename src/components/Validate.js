@@ -40,6 +40,15 @@ export function validate_predecessor_tasks(steps) {
     return true;
 }
 
+export function validate_unique_session_numbers(steps) {
+    session_numbers = Object.keys(steps);
+    session_numbers_set = Set(session_numbers);
+    if (session_numbers.length !== session_numbers_set.length) {
+        return false;
+    }
+    return true;
+}
+
 export function validate_all() {
     const test_pipeline_steps = test_pipeline.steps
     for (var session_num in test_pipeline_steps) {
