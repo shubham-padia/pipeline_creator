@@ -48,15 +48,17 @@ export class Home extends Component {
     let formData = cloneDeep(form.formData);
     let formDiff = diff(this.state.pipelineFormData, formData);
 
-    for (var diffObj of formDiff) {
-      let path = diffObj.path;
+    if (formDiff) {
+      for (var diffObj of formDiff) {
+        let path = diffObj.path;
 
-      if (diffObj.kind === "E" && path[path.length - 1] === "task_type") {
-        let change = cloneDeep(diffObj);
+        if (diffObj.kind === "E" && path[path.length - 1] === "task_type") {
+          let change = cloneDeep(diffObj);
 
-        change.path[path.length - 1] = "inputs";
-        change.rhs = JSON.stringify(input_formats[diffObj.rhs], null, 2)
-        applyChange(formData, true, change);
+          change.path[path.length - 1] = "inputs";
+          change.rhs = JSON.stringify(input_formats[diffObj.rhs], null, 2)
+          applyChange(formData, true, change);
+        }
       }
     }
 

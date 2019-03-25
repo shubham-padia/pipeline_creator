@@ -52,7 +52,7 @@ export function validate_unique_session_numbers(formData) {
 export function validate_unique_step_ids(formData) {
     for (var steps_session_info of formData.steps) {
         let session_step_collection = [];
-        
+
         for (var step_for_session of steps_session_info.steps_for_session) {
             let step_id = step_for_session.id;
             session_step_collection.push(step_id);
@@ -74,7 +74,7 @@ export function validate_all(steps, formData) {
         errors.push("Session numbers should be unique.");
     }
 
-    if(!validate_unique_step_ids(formData)) {
+    if (!validate_unique_step_ids(formData)) {
         errors.push("Step ids should be unique.");
     }
 
@@ -91,4 +91,3 @@ export function validate_all_boolean(steps, formData) {
     let error_array = validate_all(steps, formData);
     return (Array.isArray(error_array) && !error_array.length);
 }
-
