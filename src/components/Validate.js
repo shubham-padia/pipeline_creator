@@ -48,11 +48,34 @@ export function validate_unique_session_numbers(formData) {
     return (session_num_collection.length === session_num_set.size)
 }
 
+
+export function validate_unique_step_ids(formData) {
+    for (var steps_session_info of formData.steps) {
+        let session_step_collection = [];
+        
+        for (var step_for_session of steps_session_info.steps_for_session) {
+            let step_id = step_for_session.id;
+            session_step_collection.push(step_id);
+        }
+        let session_step_set = new Set(session_step_collection);
+
+        if (session_step_set.size !== session_step_collection.length) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 export function validate_all(steps, formData) {
     let errors = [];
 
     if (!validate_unique_session_numbers(formData)) {
         errors.push("Session numbers should be unique.");
+    }
+
+    if(!validate_unique_step_ids(formData)) {
+        errors.push("Step ids should be unique.");
     }
 
     if (!validate_parents_exist(steps)) {
