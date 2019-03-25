@@ -1,5 +1,4 @@
 // Validation is done on the pipeline json format and not on the formdata format.
-import test_pipeline from './test_pipeline';
 import { valid_predecessors } from './SchemaDefinitions';
 
 export function validate_parents_exist(steps) {
@@ -40,22 +39,33 @@ export function validate_predecessor_tasks(steps) {
     return true;
 }
 
-export function validate_unique_session_numbers(steps) {
-    session_numbers = Object.keys(steps);
-    session_numbers_set = Set(session_numbers);
-    if (session_numbers.length !== session_numbers_set.length) {
-        return false;
+export function validate_unique_session_numbers(formData) {
+    let session_num_collection = [];
+    for (var steps_session_info of formData.steps) {
+        session_num_collection.push(steps_session_info.session_num);
     }
-    return true;
+    let session_num_set = new Set(session_num_collection);
+    return (session_num_collection.length === session_num_set.size)
 }
 
-export function validate_all() {
-    const test_pipeline_steps = test_pipeline.steps
-    for (var session_num in test_pipeline_steps) {
-        console.log("validate parents exist")
-        console.log(validate_parents_exist(test_pipeline_steps[session_num]))
-        console.log("validate predecesor")
-        console.log(validate_predecessor_tasks(test_pipeline_steps[session_num]))
+export function validate_all(steps, formData) {
+    let errors = [];
+
+    if (!validate_unique_session_numbers(formData)) {
+        errors.push("Session numbers should be unique.");
     }
+
+    if(!validate_parents_exist(steps)) {
+        errors.push("Parents do not exist.");
+    } else if (!validate_predecessor_tasks(steps)) {
+        errors.push("Predecessor tasks do not exist.");
+    }
+
+    return errors;
+}
+
+export function validate_all_boolean(steps, formData) {
+    let error_array = validate_all(steps, formData);
+    return (Array.isArray(error_array) && !error_array.length);
 }
 

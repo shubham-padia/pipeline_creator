@@ -6,7 +6,7 @@ import Help from './Help'
 import { schema, uiSchema, input_formats } from './SchemaDefinitions'
 import PipelineGraphCollection from './PipelineGraphCollection'
 import { Menu } from 'semantic-ui-react'
-import { validate_parents_exist, validate_predecessor_tasks } from './Validate'
+import { validate_all, validate_all_boolean } from './Validate'
 import { cloneDeep } from 'lodash'
 import {convertToPipelineFormat} from './utils'
 import {diff, applyChange} from 'deep-diff'
@@ -19,7 +19,7 @@ export class Home extends Component {
     let valid = false;
     try {
       let steps = convertToPipelineFormat(pipelineFormData).steps
-      valid = (validate_parents_exist(steps) && validate_predecessor_tasks(steps));
+      valid = validate_all_boolean(steps, pipelineFormData);
     } catch {
     }
 
@@ -63,7 +63,7 @@ export class Home extends Component {
     let valid = false;
     try {
       let steps = convertToPipelineFormat(formData).steps;
-      valid = (validate_parents_exist(steps) && validate_predecessor_tasks(steps))
+      valid = validate_all_boolean(steps, formData)
     } catch {
     }
     
@@ -97,10 +97,9 @@ export class Home extends Component {
   validate = (formData, errors) => {
     let steps = convertToPipelineFormat(formData).steps;
 
-    if (!validate_parents_exist(steps)) {
-      errors.steps.addError("Parents do not exist. You're an orphan now. Deal with it.")
-    } else if (!validate_predecessor_tasks(steps)) {
-      errors.steps.addError("Invalid predecessors")
+    let error_array = validate_all(steps, formData);
+    for (var error of error_array) {
+      errors.steps.addError(error);
     }
 
     return errors;
