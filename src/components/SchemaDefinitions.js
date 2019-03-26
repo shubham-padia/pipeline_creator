@@ -78,7 +78,7 @@ export const schema = {
 };
 
 const twoWide = {
-    classNames: "col-md-2"
+    classNames: "col-md-2 step-field"
 }
 
 export const uiSchema = {
@@ -104,7 +104,7 @@ export const uiSchema = {
                     "task_type": twoWide,
                     "parent_id": twoWide,
                     "inputs": {
-                        classNames: "col-md-6",
+                        classNames: "col-md-6 step-field",
                         "ui:widget": "textarea",
                         "ui:options": {
                             "rows": 5
