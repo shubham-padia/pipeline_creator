@@ -24,3 +24,6 @@ body {
     user-select: auto; /* Standard syntax */
 }
 
+.col-xs-9 {
+    width: 95%;
+}

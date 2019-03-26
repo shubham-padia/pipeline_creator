@@ -78,7 +78,7 @@ export const schema = {
 };
 
 const twoWide = {
-    classNames: "col-md-4"
+    classNames: "col-md-2"
 }
 
 export const uiSchema = {
@@ -104,6 +104,7 @@ export const uiSchema = {
                     "task_type": twoWide,
                     "parent_id": twoWide,
                     "inputs": {
+                        classNames: "col-md-6",
                         "ui:widget": "textarea",
                         "ui:options": {
                             "rows": 5
