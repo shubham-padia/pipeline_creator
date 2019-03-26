@@ -107,7 +107,7 @@ export const uiSchema = {
                         classNames: "col-md-6 step-field",
                         "ui:widget": "textarea",
                         "ui:options": {
-                            "rows": 5
+                            "rows": 4
                         }
                     }
                 }
