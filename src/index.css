@@ -31,3 +31,8 @@ body {
 .step-field {
     margin-bottom: 5px;
 }
+
+.array-item-add {
+    margin-left: 96%;
+    width: 4%;
+}
