@@ -12,16 +12,6 @@ export const schema = {
             "type": "string",
             "title": "Name"
         },
-        "version": {
-            "type": "string",
-            "title": "Version",
-            "enum": ["0.0.1"],
-            "default": "0.0.1"
-        },
-        "metadata": {
-            "type": "string",
-            "title": "Metadata"
-        },
         "steps": {
             "type": "array",
             "title": "Steps",
@@ -73,7 +63,18 @@ export const schema = {
                     }
                 }
             }
-        }
+        },
+        "version": {
+            "type": "string",
+            "title": "Version",
+            "enum": ["0.0.1"],
+            "default": "0.0.1"
+        },
+        "metadata": {
+            "type": "string",
+            "title": "Metadata"
+        },
+        
     }
 };
 
@@ -81,14 +82,22 @@ const twoWide = {
     classNames: "col-md-2 step-field"
 }
 
+const infoField = {
+    classNames: "info-field",
+}
+
 export const uiSchema = {
+    "name": infoField,
+    "version": infoField,
     "metadata": {
+        classNames: "info-field",
         "ui:widget": "textarea",
         "ui:options": {
-            "rows": 8
+            "rows": 22
         }
     },
     "steps": {
+        classNames: "steps",
         "ui:options": {
             "orderable": false
         },

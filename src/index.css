@@ -14,7 +14,7 @@ body {
 }
 
 .array-item-toolbox {
-    width: 50px !important;
+    width: 5% !important;
 }
 
 .ui.menu .item {
@@ -25,7 +25,7 @@ body {
 }
 
 .col-xs-9 {
-    width: 97%;
+    width: 93%;
 }
 
 .step-field {
@@ -33,6 +33,18 @@ body {
 }
 
 .array-item-add {
-    margin-left: 96%;
-    width: 4%;
+    margin-left: 93%;
+}
+
+.info-field {
+    width: 25%;
+    float: left;
+}
+
+.steps {
+    width: 72%;
+    float: right;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 85vh;
 }
