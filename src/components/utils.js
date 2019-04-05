@@ -38,3 +38,31 @@ export function convertToPipelineFormat(formDataOriginal) {
     formData.steps = formatted_steps;
     return formData;
 }
+
+export function importFromPipelineFormat(pipelineDataOriginal) {
+    var pipelineData = cloneDeep(pipelineDataOriginal);
+
+    let imported_steps = [];
+    pipelineData.metadata = JSON.stringify(pipelineData.metadata);
+
+    for (let session_num in pipelineData.steps) {
+        let imported_steps_for_sessions = [];
+        let steps_for_session = pipelineData.steps[session_num];
+
+        for (let step_num in steps_for_session) {
+            let step_for_session = steps_for_session[step_num];
+            step_for_session.id = step_num;
+            step_for_session.inputs = JSON.stringify(step_for_session.inputs);
+
+            if (step_for_session.parent_id) {
+                step_for_session.parent_id = step_for_session.parent_id.join(', ');
+            }
+            imported_steps_for_sessions.push(step_for_session);
+        }
+
+        imported_steps.push({ session_num: session_num, steps_for_session: imported_steps_for_sessions })
+    }
+
+    pipelineData.steps = imported_steps;
+    return pipelineData;
+}
