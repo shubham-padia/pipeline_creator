@@ -52,7 +52,7 @@ export class Home extends Component {
       for (var diffObj of formDiff) {
         let path = diffObj.path;
 
-        if (diffObj.kind === "E" && path[path.length - 1] === "task_type") {
+        if (path && diffObj.kind === "E" && path[path.length - 1] === "task_type") {
           let change = cloneDeep(diffObj);
 
           change.path[path.length - 1] = "inputs";
