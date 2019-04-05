@@ -43,7 +43,7 @@ export function importFromPipelineFormat(pipelineDataOriginal) {
     var pipelineData = cloneDeep(pipelineDataOriginal);
 
     let imported_steps = [];
-    pipelineData.metadata = JSON.stringify(pipelineData.metadata);
+    pipelineData.metadata = JSON.stringify(pipelineData.metadata, null, 2);
 
     for (let session_num in pipelineData.steps) {
         let imported_steps_for_sessions = [];
@@ -52,7 +52,7 @@ export function importFromPipelineFormat(pipelineDataOriginal) {
         for (let step_num in steps_for_session) {
             let step_for_session = steps_for_session[step_num];
             step_for_session.id = step_num;
-            step_for_session.inputs = JSON.stringify(step_for_session.inputs);
+            step_for_session.inputs = JSON.stringify(step_for_session.inputs, null, 2);
 
             if (step_for_session.parent_id) {
                 step_for_session.parent_id = step_for_session.parent_id.join(', ');
