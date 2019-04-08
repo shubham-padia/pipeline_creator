@@ -5,10 +5,10 @@ import ls from "local-storage"
 import Help from './Help'
 import { schema, uiSchema, input_formats } from './SchemaDefinitions'
 import PipelineGraphCollection from './PipelineGraphCollection'
-import { Menu } from 'semantic-ui-react'
+import { Menu, Input } from 'semantic-ui-react'
 import { validate_all, validate_all_boolean } from './Validate'
 import { cloneDeep } from 'lodash'
-import { convertToPipelineFormat } from './utils'
+import { convertToPipelineFormat, importFromPipelineFormat } from './utils'
 import { diff, applyChange } from 'deep-diff'
 
 export class Home extends Component {
@@ -28,6 +28,27 @@ export class Home extends Component {
       valid
     };
   }
+
+  handleFileChosen = (file) => {
+    let fileReader = new FileReader();
+    fileReader.onloadend = (e) => {
+      console.log(fileReader)
+      let content = fileReader.result;
+      let pipelineFormData = {}
+      try {
+        content = JSON.parse(content)
+        pipelineFormData = importFromPipelineFormat(content);
+        this.setState({
+          pipelineFormData: pipelineFormData
+        });
+        this.saveStateToLocalStorage();
+      } catch (err) {
+        console.log(err)
+        alert("The file being imported is invalid");
+      }
+    };
+    fileReader.readAsText(file);
+  };
 
   submitFormData = (form) => {
     this.setState({
@@ -113,6 +134,14 @@ export class Home extends Component {
         <Menu className="top fixed" stackable size="huge">
           <Menu.Item>Pipeline Generator</Menu.Item>
           <Menu.Menu position="right">
+            <Menu.Item>
+              Import pipeline
+              <Input type='file'
+                id='file'
+                accept='.json'
+                onChange={e => this.handleFileChosen(e.target.files[0])}
+              />
+            </Menu.Item>
             <Menu.Item>
               {this.state.valid ? <span style={{ color: "green" }}>Valid Form</span> : <span style={{ color: "red" }}>Invalid Form</span>}
             </Menu.Item>
