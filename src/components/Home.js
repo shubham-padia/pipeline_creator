@@ -32,9 +32,8 @@ export class Home extends Component {
   handleFileChosen = (file) => {
     let fileReader = new FileReader();
     fileReader.onloadend = (e) => {
-      console.log(fileReader)
       let content = fileReader.result;
-      let pipelineFormData = {}
+      let pipelineFormData = {};
       try {
         content = JSON.parse(content)
         pipelineFormData = importFromPipelineFormat(content);
@@ -44,7 +43,27 @@ export class Home extends Component {
         });
         this.saveStateToLocalStorage();
       } catch (err) {
-        console.log(err)
+        alert("The file being imported is invalid");
+      }
+    };
+    fileReader.readAsText(file);
+  };
+
+  handleMetadataImport = (file) => {
+    let fileReader = new FileReader();
+    
+    fileReader.onloadend = (e) => {
+      let content = fileReader.result;
+
+      try {
+        JSON.parse(content) // check if content is valid JSON
+        let pipelineFormData = this.state.pipelineFormData
+        pipelineFormData.metadata = content
+        this.setState({
+          pipelineFormData: pipelineFormData
+        });
+        this.saveStateToLocalStorage();
+      } catch (err) {
         alert("The file being imported is invalid");
       }
     };
@@ -134,6 +153,14 @@ export class Home extends Component {
       <div>
         <Menu className="top fixed" stackable size="huge">
           <Menu.Item>Pipeline Generator</Menu.Item>
+          <Menu.Item>
+            Import metadata
+              <Input type='file'
+              id='metadata'
+              accept='.json'
+              onChange={e => this.handleMetadataImport(e.target.files[0])}
+            />
+          </Menu.Item>
 
           <Menu.Menu position="right">
             <Menu.Item>
