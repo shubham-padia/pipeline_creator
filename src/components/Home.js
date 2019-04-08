@@ -38,6 +38,7 @@ export class Home extends Component {
       try {
         content = JSON.parse(content)
         pipelineFormData = importFromPipelineFormat(content);
+        pipelineFormData.name = file.name.replace(/\.[^/.]+$/, "")
         this.setState({
           pipelineFormData: pipelineFormData
         });
