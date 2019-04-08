@@ -134,6 +134,7 @@ export class Home extends Component {
       <div>
         <Menu className="top fixed" stackable size="huge">
           <Menu.Item>Pipeline Generator</Menu.Item>
+
           <Menu.Menu position="right">
             <Menu.Item>
               Import pipeline
@@ -143,9 +144,11 @@ export class Home extends Component {
                 onChange={e => this.handleFileChosen(e.target.files[0])}
               />
             </Menu.Item>
+
             <Menu.Item>
               {this.state.valid ? <span style={{ color: "green" }}>Valid Form</span> : <span style={{ color: "red" }}>Invalid Form</span>}
             </Menu.Item>
+
             <Menu.Item name='pipeline-graphs'>
               <PipelineGraphCollection valid={this.state.valid} steps={this.state.pipelineFormData}></PipelineGraphCollection>
             </Menu.Item>
