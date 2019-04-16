@@ -51,7 +51,7 @@ export function importFromPipelineFormat(pipelineDataOriginal) {
 
     for (let step_num in steps_for_session) {
       let step_for_session = steps_for_session[step_num];
-      step_for_session.id = step_num;
+      step_for_session.id = parseInt(step_num);
       step_for_session.inputs = JSON.stringify(step_for_session.inputs, null, 2);
 
       if (step_for_session.parent_id) {
@@ -60,7 +60,10 @@ export function importFromPipelineFormat(pipelineDataOriginal) {
       imported_steps_for_sessions.push(step_for_session);
     }
 
-    imported_steps.push({ session_num: session_num, steps_for_session: imported_steps_for_sessions })
+    imported_steps.push({
+      session_num: parseInt(session_num),
+      steps_for_session: imported_steps_for_sessions 
+    })
   }
 
   pipelineData.steps = imported_steps;
