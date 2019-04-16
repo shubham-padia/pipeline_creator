@@ -69,8 +69,8 @@ export const schema = {
     "version": {
       "type": "string",
       "title": "Version",
-      "enum": ["0.0.1", "0.0.2", "0.0.3"],
-      "default": "0.0.3"
+      "enum": ["0.0.4"],
+      "default": "0.0.4"
     },
     "recording_id": {
       "type": "string",
