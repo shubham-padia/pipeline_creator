@@ -2,7 +2,6 @@ export const schema = {
   "title": "",
   "type": "object",
   "required": [
-    "name",
     "recording_id",
     "pipeline_id",
     "version",
@@ -10,10 +9,6 @@ export const schema = {
     "steps"
   ],
   "properties": {
-    "name": {
-      "type": "string",
-      "title": "Name"
-    },
     "steps": {
       "type": "array",
       "title": "Steps",
@@ -69,8 +64,7 @@ export const schema = {
     "version": {
       "type": "string",
       "title": "Version",
-      "enum": ["0.0.4"],
-      "default": "0.0.4"
+      "enum": ["0.0.4"]
     },
     "recording_id": {
       "type": "string",
@@ -96,7 +90,6 @@ const infoField = {
 }
 
 export const uiSchema = {
-  "name": infoField,
   "version": infoField,
   "recording_id": infoField,
   "pipeline_id": infoField,

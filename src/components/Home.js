@@ -77,7 +77,7 @@ export class Home extends Component {
     this.saveStateToLocalStorage();
 
     var formData = form.formData;
-    var file_name = formData.name;
+    var file_name = formData.recording_id + '_' + formData.pipeline_id;
     delete formData.name;
 
     var resultFormData = JSON.stringify(convertToPipelineFormat(form.formData), null, 2);
