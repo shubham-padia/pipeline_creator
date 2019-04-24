@@ -11,7 +11,7 @@ import { cloneDeep } from 'lodash'
 import { convertToPipelineFormat, importFromPipelineFormat } from './utils'
 import { diff, applyChange } from 'deep-diff'
 
-const SERVER_URL = 'http://localhost:8000'
+const SERVER_URL = 'http://155.69.146.209:8000'
 
 export class Home extends Component {
   constructor(props) {
