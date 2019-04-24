@@ -11,6 +11,8 @@ import { cloneDeep } from 'lodash'
 import { convertToPipelineFormat, importFromPipelineFormat } from './utils'
 import { diff, applyChange } from 'deep-diff'
 
+const SERVER_URL = 'http://localhost:8000'
+
 export class Home extends Component {
   constructor(props) {
     super(props);
@@ -51,7 +53,7 @@ export class Home extends Component {
 
   handleMetadataImport = (file) => {
     let fileReader = new FileReader();
-    
+
     fileReader.onloadend = (e) => {
       let content = fileReader.result;
 
@@ -70,19 +72,50 @@ export class Home extends Component {
     fileReader.readAsText(file);
   };
 
+  exportFormData = () => {
+    var formData = cloneDeep(this.state.pipelineFormData);
+    var file_name = formData.recording_id + '_' + formData.pipeline_id;
+    delete formData.name;
+
+    var resultFormData = JSON.stringify(convertToPipelineFormat(formData), null, 2);
+    var fileDownload = require('js-file-download');
+    fileDownload(resultFormData, file_name + '.json');
+  }
+
   submitFormData = (form) => {
     this.setState({
       pipelineFormData: cloneDeep(form.formData)
     });
     this.saveStateToLocalStorage();
 
-    var formData = form.formData;
-    var file_name = formData.recording_id + '_' + formData.pipeline_id;
-    delete formData.name;
+    var formData = cloneDeep(form.formData);
+    
+    const recording_id = formData.recording_id;
+    const pipeline_id = formData.pipeline_id;
+    const version = formData.version
 
-    var resultFormData = JSON.stringify(convertToPipelineFormat(form.formData), null, 2);
-    var fileDownload = require('js-file-download');
-    fileDownload(resultFormData, file_name + '.json');
+    delete formData.name;
+    delete formData.recording_id;
+    delete formData.pipeline_id;
+    delete formData.version;
+
+    const data = {
+      version: version,
+      recording_id: recording_id,
+      pipeline_id: pipeline_id,
+      pipeline: convertToPipelineFormat(formData)
+    }
+
+    const url = SERVER_URL + '/api/v1/metadata-registry';
+    fetch(url, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data), // body data type must match "Content-Type" header
+  })
+  .then(response => response.json()); // parses JSON response into native Javascript objects 
+
   }
 
   updateFormData = (form) => {
@@ -191,8 +224,10 @@ export class Home extends Component {
             formData={this.state.pipelineFormData}
             onChange={this.updateFormData}
             onSubmit={this.submitFormData}
-            validate={this.validate}
-          />
+            validate={this.validate}>
+          </Form>
+          <button onClick={this.exportFormData} style={{ marginTop: "10px" }} className='btn btn-success'> Export </button>
+
         </div>
       </div>
     )
