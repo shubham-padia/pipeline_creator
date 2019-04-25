@@ -10,8 +10,9 @@ import { validate_all, validate_all_boolean } from './Validate'
 import { cloneDeep } from 'lodash'
 import { convertToPipelineFormat, importFromPipelineFormat } from './utils'
 import { diff, applyChange } from 'deep-diff'
+import { StatusModal } from './StatusModal'
 
-const SERVER_URL = 'http://155.69.146.209:8000'
+const SERVER_URL = 'http://localhost:8000'
 
 export class Home extends Component {
   constructor(props) {
@@ -27,7 +28,9 @@ export class Home extends Component {
 
     this.state = {
       pipelineFormData,
-      valid
+      valid,
+      isModalOpen: false,
+      modalStatusMessage: ""
     };
   }
 
@@ -89,7 +92,7 @@ export class Home extends Component {
     this.saveStateToLocalStorage();
 
     var formData = cloneDeep(form.formData);
-    
+
     const recording_id = formData.recording_id;
     const pipeline_id = formData.pipeline_id;
     const version = formData.version
@@ -107,15 +110,44 @@ export class Home extends Component {
     }
 
     const url = SERVER_URL + '/api/v1/metadata-registry';
-    fetch(url, {
-      method: "POST",
-      headers: {
+    try {
+      fetch(url, {
+        method: "POST",
+        headers: {
           "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data), // body data type must match "Content-Type" header
-  })
-  .then(response => response.json()); // parses JSON response into native Javascript objects 
+        },
+        body: JSON.stringify(data), // body data type must match "Content-Type" header
+      })
+        .then(response => {
+            if (response.ok) {
+              this.setState({
+                modalStatusMessage: "Your request was successfully submitted"
+              })
+            } else {
+              this.setState({
+                modalStatusMessage: "There was an error submitting your request"
+              })
+            }
 
+            this.setState({
+              isModalOpen: true
+            })
+          })
+        .catch(() => {
+          this.setState({
+            modalStatusMessage: "We are not able to send your request to the server. Either the server is down or you have problems with your connection.",
+            isModalOpen: true
+          })
+        });
+    } catch {
+      this.setState({
+        modalStatusMessage: "We are not able to send your request to the server. Either the server is down or you have problems with your connection."
+      })
+    }
+  }
+
+  onModalClose = () => {
+    this.setState({ isModalOpen: false, modalStatusMessage: '' });
   }
 
   updateFormData = (form) => {
@@ -227,7 +259,7 @@ export class Home extends Component {
             validate={this.validate}>
           </Form>
           <button onClick={this.exportFormData} style={{ marginTop: "10px" }} className='btn btn-success'> Export </button>
-
+          <StatusModal isModalOpen={this.state.isModalOpen} statusMessage={this.state.modalStatusMessage} onClose={this.onModalClose} />
         </div>
       </div>
     )
