@@ -3,12 +3,15 @@ import { Modal, Button, Icon } from 'semantic-ui-react'
 
 export class StatusModal extends Component {
   render() {
+    const successMessage = "Your request was successfully submitted";
+    const failureMessage = "There was an error submitting your request";
+    
     return (
       <div>
         <Modal open={this.props.isModalOpen} onClose={this.props.onClose} basic size='small'>
           <Modal.Content>
             <p>
-              {this.props.statusMessage}
+              {this.props.responseOk ? successMessage : failureMessage}
             </p>
           </Modal.Content>
           <Modal.Actions>

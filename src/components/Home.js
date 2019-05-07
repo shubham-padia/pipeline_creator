@@ -30,7 +30,7 @@ export class Home extends Component {
       pipelineFormData,
       valid,
       isModalOpen: false,
-      modalStatusMessage: ""
+      responseOk: false
     };
   }
 
@@ -119,29 +119,21 @@ export class Home extends Component {
         body: JSON.stringify(data), // body data type must match "Content-Type" header
       })
         .then(response => {
-            if (response.ok) {
-              this.setState({
-                modalStatusMessage: "Your request was successfully submitted"
-              })
-            } else {
-              this.setState({
-                modalStatusMessage: "There was an error submitting your request"
-              })
-            }
-
             this.setState({
+              responseOk: response.ok,
               isModalOpen: true
-            })
+            });
           })
         .catch(() => {
           this.setState({
-            modalStatusMessage: "We are not able to send your request to the server. Either the server is down or you have problems with your connection.",
+            responseOk: false,
             isModalOpen: true
-          })
+          });
         });
     } catch {
       this.setState({
-        modalStatusMessage: "We are not able to send your request to the server. Either the server is down or you have problems with your connection."
+        responseOk: false,
+        isModalOpen: true
       })
     }
   }
@@ -259,7 +251,7 @@ export class Home extends Component {
             validate={this.validate}>
           </Form>
           <button onClick={this.exportFormData} style={{ marginTop: "10px" }} className='btn btn-success'> Export </button>
-          <StatusModal isModalOpen={this.state.isModalOpen} statusMessage={this.state.modalStatusMessage} onClose={this.onModalClose} />
+          <StatusModal isModalOpen={this.state.isModalOpen} responseOk={this.state.responseOk} onClose={this.onModalClose} />
         </div>
       </div>
     )
