@@ -53,7 +53,7 @@ export class Upload extends Component {
             data.append('file', f);
         }
 
-        fetch('http://localhost:8000/api/v1/upload-audio', {
+        fetch(process.env.REACT_APP_SERVER_URL + '/api/v1/upload-audio', {
             method: 'POST',
             body: data
         })

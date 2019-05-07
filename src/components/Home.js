@@ -12,7 +12,7 @@ import { convertToPipelineFormat, importFromPipelineFormat } from './utils'
 import { diff, applyChange } from 'deep-diff'
 import { StatusModal } from './StatusModal'
 
-const SERVER_URL = 'http://localhost:8000'
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
 export class Home extends Component {
   constructor(props) {
