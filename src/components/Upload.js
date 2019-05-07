@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import DropzoneComponent from 'react-dropzone-component';
 import { Button, Form } from 'semantic-ui-react';
 import { cloneDeep } from 'lodash';
-
+import { StatusModal } from './StatusModal'
+ 
 export class Upload extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            fileList: []
+            fileList: [],
+            isModalOpen: false,
+            responseOk: false
         }
 
         // For a full list of possible configurations,
@@ -56,7 +59,22 @@ export class Upload extends Component {
         fetch(process.env.REACT_APP_SERVER_URL + '/api/v1/upload-audio', {
             method: 'POST',
             body: data
-        })
+        }).then(response => {
+            this.setState({
+              responseOk: response.ok,
+              isModalOpen: true
+            });
+          })
+        .catch(() => {
+          this.setState({
+            responseOk: false,
+            isModalOpen: true
+          });
+        });
+    }
+
+    onModalClose = () => {
+        this.setState({ isModalOpen: false, responseOk: false });
     }
 
     render() {
@@ -82,7 +100,8 @@ export class Upload extends Component {
                     <input name="pipeline_id" />
                 </Form.Field>
                 <DropzoneComponent config={config} eventHandlers={eventHandlers} djsConfig={djsConfig} />
-                <Button type='submit' >Submit</Button>
+                <StatusModal isModalOpen={this.state.isModalOpen} responseOk={this.state.responseOk} onClose={this.onModalClose} />
+                <Button type='submit'>Submit</Button>
             </Form>
         )
     }

@@ -139,7 +139,7 @@ export class Home extends Component {
   }
 
   onModalClose = () => {
-    this.setState({ isModalOpen: false, modalStatusMessage: '' });
+    this.setState({ isModalOpen: false, responseOk: false });
   }
 
   updateFormData = (form) => {
