@@ -58,3 +58,8 @@ body {
 .filepicker.dropzone .dz-preview.dz-image-preview .dz-image {
     border-radius: 5px;
 }
+
+.dropzone .dz-preview.dz-error:hover .dz-error-message,
+.dropzone .dz-preview.dz-error .dz-error-mark {
+    display: none;
+}

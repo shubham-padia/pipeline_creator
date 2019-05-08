@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import 'semantic-ui-css/semantic.min.css'
 import * as serviceWorker from './serviceWorker';
-import './index.css';
 import '../node_modules/dropzone/dist/min/dropzone.min.css'
+import './index.css';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
