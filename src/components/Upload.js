@@ -98,15 +98,15 @@ export class Upload extends Component {
                 <Form onSubmit={this.handleSubmit} style={{ marginTop: "50px", marginBottom: "50px" }}>
                     <Form.Field>
                         <label>Recording ID</label>
-                        <input name="recording_id" />
+                        <input required name="recording_id" />
                     </Form.Field>
                     <Form.Field>
                         <label>Pipeline ID</label>
-                        <input name="pipeline_id" />
+                        <input required name="pipeline_id" />
                     </Form.Field>
                     <DropzoneComponent config={config} eventHandlers={eventHandlers} djsConfig={djsConfig} />
                     <StatusModal isModalOpen={this.state.isModalOpen} responseOk={this.state.responseOk} onClose={this.onModalClose} />
-                    <Button type='submit'>Submit</Button>
+                    <Button type='submit' style={{marginTop: '10px', background: '#0bdecb', color: 'white'}}>Submit</Button>
                 </Form>
             </div>
         )

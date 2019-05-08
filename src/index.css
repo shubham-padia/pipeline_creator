@@ -63,3 +63,7 @@ body {
 .dropzone .dz-preview.dz-error .dz-error-mark {
     display: none;
 }
+
+.dropzone {
+    border: 2px dashed skyblue;
+}
