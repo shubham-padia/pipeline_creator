@@ -119,11 +119,11 @@ export class Home extends Component {
         body: JSON.stringify(data), // body data type must match "Content-Type" header
       })
         .then(response => {
-            this.setState({
-              responseOk: response.ok,
-              isModalOpen: true
-            });
-          })
+          this.setState({
+            responseOk: response.ok,
+            isModalOpen: true
+          });
+        })
         .catch(() => {
           this.setState({
             responseOk: false,
@@ -209,7 +209,8 @@ export class Home extends Component {
     return (
       <div>
         <Menu className="top fixed" stackable size="huge">
-          <Menu.Item>Pipeline Generator</Menu.Item>
+          <Menu.Item><a href='/'>Pipeline Form</a></Menu.Item>
+          <Menu.Item><a href='/upload'>Upload Audio</a></Menu.Item>
           <Menu.Item>
             Import metadata
               <Input type='file'

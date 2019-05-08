@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import DropzoneComponent from 'react-dropzone-component';
-import { Button, Form } from 'semantic-ui-react';
+import { Menu, Button, Form } from 'semantic-ui-react';
 import { cloneDeep } from 'lodash';
 import { StatusModal } from './StatusModal'
- 
+
 export class Upload extends Component {
     constructor(props) {
         super(props);
@@ -61,16 +61,16 @@ export class Upload extends Component {
             body: data
         }).then(response => {
             this.setState({
-              responseOk: response.ok,
-              isModalOpen: true
+                responseOk: response.ok,
+                isModalOpen: true
             });
-          })
-        .catch(() => {
-          this.setState({
-            responseOk: false,
-            isModalOpen: true
-          });
-        });
+        })
+            .catch(() => {
+                this.setState({
+                    responseOk: false,
+                    isModalOpen: true
+                });
+            });
     }
 
     onModalClose = () => {
@@ -90,19 +90,25 @@ export class Upload extends Component {
         }
 
         return (
-            <Form onSubmit={this.handleSubmit}>
-                <Form.Field>
-                    <label>Recording ID</label>
-                    <input name="recording_id" />
-                </Form.Field>
-                <Form.Field>
-                    <label>Pipeline ID</label>
-                    <input name="pipeline_id" />
-                </Form.Field>
-                <DropzoneComponent config={config} eventHandlers={eventHandlers} djsConfig={djsConfig} />
-                <StatusModal isModalOpen={this.state.isModalOpen} responseOk={this.state.responseOk} onClose={this.onModalClose} />
-                <Button type='submit'>Submit</Button>
-            </Form>
+            <div>
+                <Menu className="top fixed" stackable size="huge">
+                    <Menu.Item><a href='/'>Pipeline Form</a></Menu.Item>
+                    <Menu.Item><a href='/upload'>Upload Audio</a></Menu.Item>
+                </Menu>
+                <Form onSubmit={this.handleSubmit} style={{ marginTop: "50px", marginBottom: "50px" }}>
+                    <Form.Field>
+                        <label>Recording ID</label>
+                        <input name="recording_id" />
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Pipeline ID</label>
+                        <input name="pipeline_id" />
+                    </Form.Field>
+                    <DropzoneComponent config={config} eventHandlers={eventHandlers} djsConfig={djsConfig} />
+                    <StatusModal isModalOpen={this.state.isModalOpen} responseOk={this.state.responseOk} onClose={this.onModalClose} />
+                    <Button type='submit'>Submit</Button>
+                </Form>
+            </div>
         )
     }
 }
