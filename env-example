@@ -1,2 +1,2 @@
 # Do not append slash at the end.
-REACT_APP_SERVER_URL=http://localhost:8000
+REACT_APP_SERVER_URL=http://server_domain_or_IP:8000

@@ -1,6 +1,12 @@
 # Pipeline creator
 
-## Installation instructions:
+## Install:
+1.) clone the project.
+2.) cd into the project directory.
+3.) run `bash install.sh`
+4.) To deploy i.e run your project, execute `bash deploy.sh`
+
+## Manual installation instructions:
 
 1.) Install the serve package globally
     ```
