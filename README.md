@@ -1,10 +1,13 @@
 # Pipeline creator
 
 ## Install:
-1.) clone the project.
-2.) cd into the project directory.
-3.) run `bash install.sh`
-4.) To deploy i.e run your project, execute `bash deploy.sh`
+1.)
+```
+git clone https://github.com/shubham-padia/pipeline_creator
+cd asr_airflow
+```
+2.) run `bash install.sh`
+3.) To deploy i.e run your project, execute `bash deploy.sh`
 
 ## Manual installation instructions:
 
