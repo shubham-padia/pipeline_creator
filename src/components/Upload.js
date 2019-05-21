@@ -100,10 +100,6 @@ export class Upload extends Component {
                         <label>Recording ID</label>
                         <input required name="recording_id" />
                     </Form.Field>
-                    <Form.Field>
-                        <label>Pipeline ID</label>
-                        <input required name="pipeline_id" />
-                    </Form.Field>
                     <DropzoneComponent config={config} eventHandlers={eventHandlers} djsConfig={djsConfig} />
                     <StatusModal isModalOpen={this.state.isModalOpen} responseOk={this.state.responseOk} onClose={this.onModalClose} />
                     <Button type='submit' style={{marginTop: '10px', background: '#0bdecb', color: 'white'}}>Submit</Button>
