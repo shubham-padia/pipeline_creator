@@ -71,8 +71,9 @@ export class Upload extends Component {
                 responseOk: response.ok,
                 isModalOpen: true
             });
-        }).catch(() => {
+        }).catch((err) => {
                 console.log("We are in the catch block")
+                console.log(err)
                 this.setState({
                     responseOk: false,
                     isModalOpen: true
