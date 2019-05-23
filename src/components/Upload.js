@@ -59,7 +59,6 @@ export class Upload extends Component {
         fetch(process.env.REACT_APP_SERVER_URL + '/api/v1/upload-audio', {
             method: 'POST',
             body: data,
-            mode: 'no-cors',
             header: {
                 'Access-Control-Allow-Origin':'*',
             }
