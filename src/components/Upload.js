@@ -58,14 +58,21 @@ export class Upload extends Component {
 
         fetch(process.env.REACT_APP_SERVER_URL + '/api/v1/upload-audio', {
             method: 'POST',
-            body: data
+            body: data,
+            mode: 'no-cors',
+            header: {
+                'Access-Control-Allow-Origin':'*',
+            }
         }).then(response => {
+            console.log("we are not in the catch block")
+            console.log("response.ok value is:")
+            console.log(response.ok)
             this.setState({
                 responseOk: response.ok,
                 isModalOpen: true
             });
-        })
-            .catch(() => {
+        }).catch(() => {
+                console.log("We are in the catch block")
                 this.setState({
                     responseOk: false,
                     isModalOpen: true
