@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import DropzoneComponent from 'react-dropzone-component';
 import { Menu, Button, Form } from 'semantic-ui-react';
 import { cloneDeep } from 'lodash';
-import { StatusModal } from './StatusModal'
+import { StatusModal } from './StatusModal';
+import { UploadSpinner } from './UploadSpinner';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
@@ -13,7 +14,8 @@ export class Upload extends Component {
         this.state = {
             fileList: [],
             isModalOpen: false,
-            responseOk: false
+            responseOk: false,
+            loading: false
         }
 
         // For a full list of possible configurations,
@@ -58,64 +60,72 @@ export class Upload extends Component {
             data.append('file', f);
         }
 
-        fetch(process.env.REACT_APP_SERVER_URL + '/api/v1/upload-audio', {
-            method: 'POST',
-            body: data,
-            header: {
-                'Access-Control-Allow-Origin':'*',
-            }
-        }).then(response => {
-            console.log("we are not in the catch block")
-            console.log("response.ok value is:")
-            console.log(response.ok)
-            this.setState({
-                responseOk: response.ok,
-                isModalOpen: true
-            });
-        }).catch((err) => {
+        this.setState({
+            loading: true
+        }, () => {
+                fetch(process.env.REACT_APP_SERVER_URL + '/api/v1/upload-audio', {
+                method: 'POST',
+                body: data,
+                header: {
+                    'Access-Control-Allow-Origin': '*',
+                }
+            }).then(response => {
+                console.log("we are not in the catch block")
+                console.log("response.ok value is:")
+                console.log(response.ok)
+                this.setState({
+                    responseOk: response.ok,
+                    isModalOpen: true,
+                    loading: false
+                });
+            }).catch((err) => {
                 console.log("We are in the catch block")
                 console.log(err)
                 this.setState({
                     responseOk: false,
-                    isModalOpen: true
+                    isModalOpen: true,
+                    loading: false
                 });
             });
+    })
+
+}
+
+onModalClose = () => {
+    this.setState({ isModalOpen: false, responseOk: false });
+}
+
+render() {
+    const config = this.componentConfig;
+    const djsConfig = this.djsConfig;
+
+    // For a list of all possible events (there are many), see README.md!
+    const eventHandlers = {
+        init: dz => this.dropzone = dz,
+        drop: this.callbackArray,
+        addedfile: this.addedfile,
+        removedfile: this.removedfile
     }
 
-    onModalClose = () => {
-        this.setState({ isModalOpen: false, responseOk: false });
-    }
-
-    render() {
-        const config = this.componentConfig;
-        const djsConfig = this.djsConfig;
-
-        // For a list of all possible events (there are many), see README.md!
-        const eventHandlers = {
-            init: dz => this.dropzone = dz,
-            drop: this.callbackArray,
-            addedfile: this.addedfile,
-            removedfile: this.removedfile
-        }
-
-        return (
-            <div>
-                <Menu className="top fixed" stackable size="huge">
-                    <Menu.Item><a href='/'>Pipeline Form</a></Menu.Item>
-                    <Menu.Item><a href='/upload'>Upload Audio</a></Menu.Item>
-                </Menu>
-                <Form onSubmit={this.handleSubmit} style={{ marginTop: "50px", marginBottom: "50px" }}>
-                    <Form.Field>
-                        <label>Recording ID</label>
-                        <input required name="recording_id" />
-                    </Form.Field>
-                    <DropzoneComponent config={config} eventHandlers={eventHandlers} djsConfig={djsConfig} />
-                    <StatusModal isModalOpen={this.state.isModalOpen} responseOk={this.state.responseOk} onClose={this.onModalClose} />
-                    <Button type='submit' style={{marginTop: '10px', background: '#0bdecb', color: 'white'}}>Submit</Button>
-                </Form>
-            </div>
-        )
-    }
+    return (
+        <div>
+            <Menu className="top fixed" stackable size="huge">
+                <Menu.Item><a href='/'>Pipeline Form</a></Menu.Item>
+                <Menu.Item><a href='/upload'>Upload Audio</a></Menu.Item>
+            </Menu>
+            <Form onSubmit={this.handleSubmit} style={{ marginTop: "50px", marginBottom: "50px" }}>
+                <Form.Field>
+                    <label>Recording ID</label>
+                    <input required name="recording_id" />
+                </Form.Field>
+                <DropzoneComponent config={config} eventHandlers={eventHandlers} djsConfig={djsConfig} />
+                <StatusModal isModalOpen={this.state.isModalOpen} responseOk={this.state.responseOk} onClose={this.onModalClose} />
+                <Button type='submit' style={{ marginTop: '10px', background: '#0bdecb', color: 'white' }}>Submit</Button>
+            </Form>
+            <UploadSpinner loading={this.state.loading} ></UploadSpinner>
+        </div>
+    )
+}
 }
 
 export default Upload
