@@ -4,6 +4,8 @@ import { Menu, Button, Form } from 'semantic-ui-react';
 import { cloneDeep } from 'lodash';
 import { StatusModal } from './StatusModal'
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL
+
 export class Upload extends Component {
     constructor(props) {
         super(props);
@@ -23,7 +25,7 @@ export class Upload extends Component {
         this.componentConfig = {
             iconFiletypes: ['.jpg', '.png', '.gif'],
             showFiletypeIcon: true,
-            postUrl: 'no-url'
+            postUrl: SERVER_URL + '/no-url'
         };
 
         // If you want to attach multiple callbacks, simply

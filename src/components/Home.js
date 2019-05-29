@@ -114,8 +114,7 @@ export class Home extends Component {
       fetch(url, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          'Access-Control-Allow-Origin': '*',
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(data), // body data type must match "Content-Type" header
       })
