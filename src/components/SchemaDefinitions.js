@@ -43,7 +43,7 @@ export const schema = {
                 "task_type": {
                   "type": "string",
                   "title": "Task",
-                  "enum": ["dummy", "resample", "vad", "diarization", "decoder"],
+                  "enum": ["dummy", "resample", "vad", "diarization", "decoder", "decoder_post_processing"],
                   "default": "dummy"
                 },
                 "parent_id": {
@@ -134,7 +134,8 @@ export const valid_predecessors = {
   'resample': ['dummy'],
   'vad': ['resample'],
   'diarization': ['resample'],
-  'decoder': ['resample', 'vad', 'diarization']
+  'decoder': ['resample', 'vad', 'diarization'],
+  'decoder_post_processing': ['decoder']
 }
 
 export const input_formats = {
@@ -160,6 +161,7 @@ export const input_formats = {
       "source": "",
       "speaker_id": ""
     }
-  }
+  },
+  "decoder_post_processing": {}
 }
 
