@@ -17,6 +17,7 @@ sed -i -e "s/server_domain_or_IP/$IP/g" .env
 
 cp serve-example.service pipeline-creator.service
 sed -i -e "s/shubham/$USER/g" pipeline-creator.service
+sed -i -e "s@CURRENT_DIR@$(pwd)@g" pipeline-creator.service
 sudo cp pipeline-creator.service /lib/systemd/system/pipeline-creator.service
 sudo systemctl daemon-reload
 sudo systemctl enable pipeline-creator

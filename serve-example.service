@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 User=shubham
-WorkingDirectory=/home/shubham/github/pipeline_creator
+WorkingDirectory=CURRENT_DIR
 ExecStart=/home/shubham/.nvm/versions/node/v11.10.1/bin/node /home/shubham/.nvm/versions/node/v11.10.1/lib/node_modules/serve/bin/serve.js -s build -l 4000
 Restart=on-failure
 
