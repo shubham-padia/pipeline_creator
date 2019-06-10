@@ -1,5 +1,8 @@
 sudo apt install wget
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion.sh" ] && \. "$NVM_DIR/bash_completion"
 source ~/.profile
 source ~/.bashrc
 source ~/.bash_profile
