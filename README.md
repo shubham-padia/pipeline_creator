@@ -17,6 +17,8 @@ If you want to change that IP to either 127.0.0.1 or some other IP please follow
 1.) Change the `REACT_APP_SERVER URL` with your desired IP in .env
 2.) Run `bash deploy.sh`
 
+Please note that you also have to change the IP for the backend, please have a look at the README of the [backend repo](https://github.com/shubham-padia/asr_airflow) for the same.
+
 ## Manual installation instructions:
 
 1.) Install the serve package globally
