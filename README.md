@@ -27,6 +27,8 @@ Please note that you also have to change the IP for the backend, please have a l
 3.) Add the valid predecessors of the task you are adding to the `valid_predecessors` object in the format `<your_task_name>:[<list_of_valid_predecessors_of_that_task>]`. Note: The valid predecessors of a task are tasks which can come directly before the task you are adding. Suppose you are adding another version of vad named `vad2`, its valid predecessors would be `['resample']` because only resample can come directly before vad and not other tasks like decoder.
 4.) Add the input format of your task to the `input_formats` directory.
 
+Please note that you also have to add the task in the backend, please have a look at the README of the [backend repo](https://github.com/shubham-padia/asr_airflow) for the same.
+
 ## Manual installation instructions:
 
 1.) Install the serve package globally
