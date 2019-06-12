@@ -11,6 +11,7 @@ cd asr_airflow
 3.) To deploy i.e run your project, execute `bash deploy.sh`
 
 ## Changing the IP:
+
 By default the installation script will pickup your network IP (which you can find by ifconfig) and use that.
 If you want to change that IP to either 127.0.0.1 or some other IP please follow the below given instructions.
 
@@ -18,6 +19,13 @@ If you want to change that IP to either 127.0.0.1 or some other IP please follow
 2.) Run `bash deploy.sh`
 
 Please note that you also have to change the IP for the backend, please have a look at the README of the [backend repo](https://github.com/shubham-padia/asr_airflow) for the same.
+
+## Adding a new task:
+
+1.) Open `src/components/SchemaDefinitions.js` for editing.
+2.) Add the task name e.g. for vad task, the name is 'vad'(type:string) to the `enum` list of `task_type` field in the `schema` object.
+3.) Add the valid predecessors of the task you are adding to the `valid_predecessors` object in the format `<your_task_name>:[<list_of_valid_predecessors_of_that_task>]`. Note: The valid predecessors of a task are tasks which can come directly before the task you are adding. Suppose you are adding another version of vad named `vad2`, its valid predecessors would be `['resample']` because only resample can come directly before vad and not other tasks like decoder.
+4.) Add the input format of your task to the `input_formats` directory.
 
 ## Manual installation instructions:
 
